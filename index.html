@@ -304,13 +304,14 @@
         }
 
         #island-inner:active {
-            transform: scale(0.96) translateY(1px) !important;
+            transform: scale(0.96) translateY(-1px) !important;
             transition: transform 0.1s ease !important;
         }
 
         /* Pop animation for expanded state elements */
         .island-open #island-expanded {
             display: flex;
+            transform-origin: bottom center;
             animation: islandPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
 
@@ -323,7 +324,7 @@
 
         .dynamic-shell {
             background: #BC9C7C;
-            box-shadow: 0 24px 70px rgba(95, 69, 58, 0.18), inset 0 1px 0 rgba(255,255,255,0.4);
+            box-shadow: 0 -10px 40px rgba(95, 69, 58, 0.18), 0 12px 30px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.4);
             color: #2a170e;
             border-color: rgba(42, 23, 14, 0.15) !important;
         }
@@ -638,13 +639,13 @@
             }
         }
 
-        /* Safe area insets for notched phones */
-        @supports (padding-top: env(safe-area-inset-top)) {
+        /* Safe area insets for notched phones and bottom dynamic island */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
             nav#dynamic-island {
-                top: max(20px, env(safe-area-inset-top)) !important;
+                bottom: max(20px, env(safe-area-inset-bottom)) !important;
             }
             footer {
-                padding-bottom: max(32px, env(safe-area-inset-bottom)) !important;
+                padding-bottom: max(96px, calc(env(safe-area-inset-bottom) + 72px)) !important;
             }
         }
 
@@ -770,14 +771,14 @@
 </head>
 <body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
 
-<nav id="dynamic-island" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 spring-transition">
+<nav id="dynamic-island" class="fixed bottom-5 md:bottom-6 left-1/2 -translate-x-1/2 z-50 spring-transition">
     <div id="island-inner" class="dynamic-shell relative flex items-center backdrop-blur-2xl border border-white/20 rounded-full spring-transition py-2 px-3 md:px-4 gap-3 cursor-pointer overflow-visible" style="width: 228px;" onclick="toggleIslandMobile(this)" aria-label="Otxaran navigation">
         
         <!-- Compact State: Logo centered + Lang buttons right -->
         <div id="island-compact" class="flex items-center w-full gap-2">
             <button type="button" aria-label="Abrir menu" class="w-9 h-9 rounded-full bg-white/[0.08] border border-white/10 flex items-center justify-center text-white/70 hover:text-[#bdce89] hover:bg-white/[0.12] transition-all">
                 <svg class="w-[19px] h-[19px]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
                 </svg>
             </button>
             <!-- Logo (centered) -->
@@ -1716,7 +1717,7 @@
         </div>
 
         <!-- BOTTOM BAR -->
-        <div class="py-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="pt-8 pb-28 md:pb-32 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
                 <p data-i18n="footer-text" class="text-xs text-white/25">© 2024 Otxaran arropa denda. All rights reserved.</p>
                 <div class="hidden sm:block w-px h-3 bg-white/10"></div>
@@ -1911,7 +1912,7 @@
     </script>
 </footer>
 <!-- Premium AI Chatbot Widget -->
-<div id="chatbot-window" class="fixed bottom-6 right-6 w-[350px] md:w-[400px] h-[550px] max-h-[85vh] rounded-3xl bg-[#281a15]/95 backdrop-blur-xl border border-[#BC9C7C]/15 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden transition-all duration-500 translate-y-10 opacity-0 pointer-events-none z-50 text-background">
+<div id="chatbot-window" class="fixed bottom-24 md:bottom-6 right-4 md:right-6 w-[calc(100vw-32px)] sm:w-[350px] md:w-[400px] h-[520px] max-h-[75vh] rounded-3xl bg-[#281a15]/95 backdrop-blur-xl border border-[#BC9C7C]/15 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden transition-all duration-500 translate-y-10 opacity-0 pointer-events-none z-50 text-background">
     <!-- Chat Header -->
     <div class="bg-[#281a15]/90 backdrop-blur border-b border-white/5 px-5 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -1962,7 +1963,7 @@
 </div>
 
 <!-- Floating Trigger Bubble -->
-<button onclick="toggleChat()" id="chat-trigger" class="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-[#281a15] border border-[#BC9C7C]/20 text-[#BC9C7C] shadow-[0_10px_30px_rgba(40,26,21,0.3)] hover:shadow-[0_15px_35px_rgba(40,26,21,0.4)] transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center z-40 chat-trigger-float hover:border-[#BC9C7C]/45">
+<button onclick="toggleChat()" id="chat-trigger" class="fixed bottom-28 md:bottom-6 right-5 md:right-6 w-14 h-14 rounded-full bg-[#281a15] border border-[#BC9C7C]/20 text-[#BC9C7C] shadow-[0_10px_30px_rgba(40,26,21,0.3)] hover:shadow-[0_15px_35px_rgba(40,26,21,0.4)] transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center z-40 chat-trigger-float hover:border-[#BC9C7C]/45">
     <svg class="w-[26px] h-[26px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v5.271z"></path>
     </svg>
